@@ -13,25 +13,18 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  subject { described_class.new(name: 'test', 
-                                email: 'test@test.com',
-                                password: 'test123',
-                                password_confirmation: 'test123') }
+  subject { described_class.new(name: 'test2',
+                                email: 'test2@test.com',
+                                password: 'test123') }
 
   describe "Validations" do
     it "is valid with valid attributes" do
       expect(subject).to be_valid
     end
 
-    it "is not valid without a name" do
-      subject.name = nil
-      expect(subject).to_not be_valid
-    end
+    it { should validate_presence_of(:name) }
 
-    it "is not valid without a email" do
-      subject.email = nil
-      expect(subject).to_not be_valid
-    end
+    it { should validate_presence_of(:email) }
 
     it "is not valid with an invalid email" do
       subject.email = 'invalid_email.com'
