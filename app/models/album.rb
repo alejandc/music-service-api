@@ -1,17 +1,18 @@
 # == Schema Information
 #
-# Table name: artists
+# Table name: albums
 #
 #  id         :bigint(8)        not null, primary key
 #  name       :string
-#  biography  :text
+#  artist_id  :bigint(8)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
-FactoryBot.define do
-  factory :artist do
-    name { Faker::StarWars.character }
-    biography { Faker::Lorem.paragraphs  }
-  end
+class Album < ApplicationRecord
+
+  belongs_to :artist
+
+  validates :name, :artist, presence: true
+
 end
