@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe ArtistsController, type: :request do
-  before(:all) { create(:user) }
-  
   let!(:artists) { create_list(:artist, 10) }
   let(:auth_token) { 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1MjY4MjU2NTl9.W7jOPb0mlCNpKlJvlglfP4-jBMBh_YUSkjpt-Xhv4K0' }
 
@@ -20,10 +18,8 @@ RSpec.describe ArtistsController, type: :request do
 
   # Test suite for GET /artists/:id
   describe 'GET /artists//:id' do
-    before do
-      get "/artists/#{artist_id}", headers: { 'Content-Type' => 'application/json',
-                                              'Authorization' => auth_token }
-    end
+    before { get "/artists/#{artist_id}", headers: { 'Content-Type' => 'application/json',
+                                                     'Authorization' => auth_token } }
 
     context 'when the record exists' do
       let(:artist_id) { artists.first.id }
