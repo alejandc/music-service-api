@@ -1,7 +1,16 @@
-module ApiHelper  
+module ApiHelper
   include Rack::Test::Methods
 
   def app
     Rails.application
   end
-end  
+
+  def login
+    post '/authenticate', email: "test@test.com", password: 'test123'
+    JSON.parse(last_response.body)['auth_token']
+  end
+
+  def generate_user
+    create(:user) if User.count.zero?
+  end
+end
