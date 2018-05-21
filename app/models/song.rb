@@ -13,8 +13,12 @@
 #
 
 class Song < ApplicationRecord
+  before_destroy { playlists.delete_all }
+
   belongs_to :album
   belongs_to :artist
+
+  has_and_belongs_to_many :playlists
 
   validates :name, :genre, :duration, :artist, :album, presence: true
 

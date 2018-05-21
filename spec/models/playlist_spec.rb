@@ -1,20 +1,20 @@
 # == Schema Information
 #
-# Table name: albums
+# Table name: playlists
 #
 #  id         :bigint(8)        not null, primary key
 #  name       :string
-#  artist_id  :bigint(8)
+#  user_id    :bigint(8)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
 
 require 'rails_helper'
 
-RSpec.describe Album, type: :model do
-  subject { described_class.new(name: 'album 1', artist: create(:artist)) }
+RSpec.describe Playlist, type: :model do
+  subject { described_class.new(name: 'playlist 1') }
 
-  it { should belong_to(:artist) }
+  it { should have_and_belong_to_many(:songs) }
 
   describe "Validations" do
     it "is valid with valid attributes" do
@@ -22,6 +22,5 @@ RSpec.describe Album, type: :model do
     end
 
     it { should validate_presence_of(:name) }
-    it { should validate_presence_of(:artist) }
   end
 end
