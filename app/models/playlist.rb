@@ -12,10 +12,18 @@
 class Playlist < ApplicationRecord
   before_destroy { songs.delete_all }
 
+  belongs_to :user
+
   has_and_belongs_to_many :songs
 
-  validates :name, presence: true
+  validates :name, :user, presence: true
 
   scope :by_user, -> (user_id) { where(user_id: user_id) }
+
+  def as_json(options)
+    super(options).merge({
+      songs: self.songs
+    })
+  end
 
 end

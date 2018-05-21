@@ -12,5 +12,6 @@
 FactoryBot.define do
   factory :playlist do
     name { Faker::StarWars.character }
+    user { User.last}
   end
 end

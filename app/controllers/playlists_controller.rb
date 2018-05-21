@@ -12,13 +12,19 @@ class PlaylistsController < ApplicationController
 
   def create
     @playlist = Playlist.create!(playlist_params)
-    #TODO pending relation with song list
+    @playlist.songs << Song.where(id: params[:playlist][:song_ids])
+
     json_response(@playlist, :created)
   end
 
   def update
     @playlist.update(playlist_params)
-    #TODO pending relation with song list
+
+    if params[:playlist][:song_ids].present?
+      @playlist.songs.delete
+      @playlist.songs << Song.where(id: params[:playlist][:song_ids])
+    end
+
     head :no_content
   end
 
@@ -30,7 +36,7 @@ class PlaylistsController < ApplicationController
   private
 
   def playlist_params
-    params.require(:playlist).permit(:name) if params[:playlist].present?
+    params.require(:playlist).permit(:name, :user_id) if params[:playlist].present?
   end
 
   def set_playlist

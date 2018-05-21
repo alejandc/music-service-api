@@ -12,7 +12,7 @@
 require 'rails_helper'
 
 RSpec.describe Playlist, type: :model do
-  subject { described_class.new(name: 'playlist 1') }
+  subject { described_class.new(name: 'playlist 1', user: User.last) }
 
   it { should have_and_belong_to_many(:songs) }
 
@@ -22,5 +22,6 @@ RSpec.describe Playlist, type: :model do
     end
 
     it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:user) }
   end
 end
