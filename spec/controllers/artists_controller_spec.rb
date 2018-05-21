@@ -21,7 +21,7 @@ RSpec.describe ArtistsController, type: :request do
   end
 
   # Test suite for GET /artists/:id
-  describe 'GET /artists//:id' do
+  describe 'GET /artists/:id' do
     before { get "/artists/#{artist_id}", {}, headers }
 
     context 'when the record exists' do

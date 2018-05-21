@@ -22,7 +22,7 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for GET /artists/#{artist.id}/albums/:id
+  # Test suite for GET /artists/#{artist.id}/albums/#{album.id}/songs/:id
   describe 'GET /artists/:artist_id/albums/:album_id/songs/:id' do
     before { get "/artists/#{artist.id}/albums/#{album.id}/songs/#{song_id}", {}, headers }
 
@@ -52,7 +52,7 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for POST /artists/#{artist.id}/albums
+  # Test suite for POST /artists/#{artist.id}/albums/#{album.id}/songs
   describe 'POST /artists/:artist_id/albums/:album_id/songs' do
     # valid payload
     let(:valid_attributes) { { name: 'Song 1', duration: 189.22, genre_cd: 1,
@@ -85,7 +85,7 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for PUT /artists/#{artist.id}/albums/:id
+  # Test suite for PUT /artists/#{artist.id}/albums/#{album.id}/songs/:id
   describe 'PUT /artists/:artist_id/albums/:album_id/songs/:id' do
     let(:valid_attributes) { { name: 'Song 2' } }
 
@@ -103,7 +103,7 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for DELETE /artists/#{artist.id}/albums/:id
+  # Test suite for DELETE /artists/#{artist.id}/albums/#{album.id}/songs/:id
   describe 'DELETE /artists/:artist_id/albums/:id' do
     before { delete "/artists/#{artist.id}/albums/#{album.id}/songs/#{songs.first.id}", {}, headers }
 

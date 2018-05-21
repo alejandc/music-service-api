@@ -15,5 +15,22 @@
 require 'rails_helper'
 
 RSpec.describe Song, type: :model do
+  subject { described_class.new(name: 'album 1', duration: 10.22, artist: create(:artist),
+                                album: (create(:album)), genre_cd: 1) }
 
+  it { should belong_to(:artist) }
+  it { should belong_to(:album) }
+  it { should have_and_belong_to_many(:playlists) }
+
+  describe "Validations" do
+    it "is valid with valid attributes" do
+      expect(subject).to be_valid
+    end
+
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:artist) }
+    it { should validate_presence_of(:album) }
+    it { should validate_presence_of(:duration) }
+    it { should validate_presence_of(:genre) }
+  end
 end
