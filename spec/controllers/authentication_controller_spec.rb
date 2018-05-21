@@ -1,16 +1,19 @@
 require 'rails_helper'
-require 'jwt'
 
-RSpec.describe AuthenticationController, type: :api do
+RSpec.describe AuthenticationController, type: :request do
+  before(:all) do
+    generate_user
+  end
+
   context 'authentication' do
     it 'valid user authentication' do
-      post "/authenticate", email: "test@test.com", password: 'test123'
-      expect(last_response.status).to eq 200
+      post '/authenticate', email: "test@test.com", password: 'test123'
+      expect(last_response.status).to eq(200)
     end
 
     it 'invalid user authentication' do
-      post "/authenticate", email: "test@test.com", password: 'test'
-      expect(last_response.status).to eq 401
+      post '/authenticate', email: "test@test.com", password: 'test'
+      expect(last_response.status).to eq(401)
     end
   end
 end
