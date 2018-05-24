@@ -11,7 +11,7 @@ class SongsController < ApplicationController
   end
 
   def create
-    @song = Song.new(song_params)
+    @song = Song.new(song_params.except(:artist_id, :album_id))
     @song.artist = Artist.find(params[:artist_id])
     @song.album = Album.find(params[:album_id])
 

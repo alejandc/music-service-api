@@ -1,5 +1,5 @@
 class PlaylistsController < ApplicationController
-  before_action :set_playlist, only: [:show, :update, :destroy]
+  before_action :set_playlist, only: [:show, :update, :destroy, :empty]
 
   def index
     @playlists = Playlist.by_user(@current_user.id)
@@ -34,6 +34,19 @@ class PlaylistsController < ApplicationController
   def destroy
     @playlist.destroy
     head :no_content
+  end
+
+  def empty
+    @playlist.songs.delete
+    head :no_content
+  end
+
+  def add_songs
+    if params[:song_ids].present?
+      @playlist.songs << Song.where(id: params[:song_ids])
+    end
+
+    json_response(@playlist)
   end
 
   private
