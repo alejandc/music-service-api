@@ -8,6 +8,7 @@ RSpec.describe AlbumsController, type: :request do
 
   let!(:artist) { create(:artist) }
   let!(:albums) { create_list(:album, 10, artist: artist) }
+  let!(:songs) { create_list(:song, 10, artist: artist, album: albums.first) }
   let!(:headers) { { 'Content-Type' => 'application/json', 'Authorization' => @auth_token } }
 
   # Test suite for GET /artists/#{artist.id}/albums
@@ -102,10 +103,16 @@ RSpec.describe AlbumsController, type: :request do
 
   # Test suite for DELETE /artists/#{artist.id}/albums/:id
   describe 'DELETE /artists/:artist_id/albums/:id' do
-    before { delete "/artists/#{artist.id}/albums/#{albums.first.id}", {}, headers }
+    let(:album_id) { albums.first.id }
+
+    before { delete "/artists/#{artist.id}/albums/#{album_id}", {}, headers }
 
     it 'returns status code 204' do
       expect(last_response.status).to eq(204)
+    end
+
+    it 'remove all related songs' do
+      expect(Song.by_album(album_id).count).to eq(0)
     end
   end
 end
