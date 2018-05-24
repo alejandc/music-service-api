@@ -11,6 +11,6 @@ module ApiHelper
   end
 
   def generate_user
-    create(:user) if User.count.zero?
+    User.last || create(:user)
   end
 end

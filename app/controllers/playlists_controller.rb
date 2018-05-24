@@ -11,14 +11,17 @@ class PlaylistsController < ApplicationController
   end
 
   def create
-    @playlist = Playlist.create!(playlist_params)
+    @playlist = Playlist.new(playlist_params)
+    @playlist.user = @current_user
+    @playlist.save!
+
     @playlist.songs << Song.where(id: params[:playlist][:song_ids])
 
     json_response(@playlist, :created)
   end
 
   def update
-    @playlist.update(playlist_params.delete('user_id'))
+    @playlist.update(playlist_params)
 
     if params[:playlist][:song_ids].present?
       @playlist.songs.delete
@@ -36,7 +39,7 @@ class PlaylistsController < ApplicationController
   private
 
   def playlist_params
-    params.require(:playlist).permit(:name, :user_id) if params[:playlist].present?
+    params.require(:playlist).permit(:name) if params[:playlist].present?
   end
 
   def set_playlist

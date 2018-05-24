@@ -2,14 +2,14 @@ require 'rails_helper'
 
 RSpec.describe PlaylistsController, type: :request do
   before(:all) do
-    generate_user
+    @user = generate_user
     @auth_token = login
   end
 
   let!(:artist) { create(:artist) }
   let!(:album) { create(:album) }
   let!(:songs) { create_list(:song, 10, artist: artist, album: album) }
-  let!(:playlists) { create_list(:playlist, 10, songs: songs) }
+  let!(:playlists) { create_list(:playlist, 10, songs: songs, user: @user) }
   let!(:headers) { { 'Content-Type' => 'application/json', 'Authorization' => @auth_token } }
 
   # Test suite for GET /playlists
@@ -56,7 +56,7 @@ RSpec.describe PlaylistsController, type: :request do
   # Test suite for POST /playlists
   describe 'POST /playlists' do
     # valid payload
-    let(:valid_attributes) { { name: 'Playlist 1', user_id: User.last.id, song_ids: songs.map(&:id)  } }
+    let(:valid_attributes) { { name: 'Playlist 1', song_ids: songs.map(&:id)  } }
 
     context 'when the request is valid' do
       before { post '/playlists', { playlist: valid_attributes }, headers }
@@ -81,7 +81,7 @@ RSpec.describe PlaylistsController, type: :request do
       end
 
       it 'returns a validation failure message' do
-        expect(last_response.body).to match(/Validation failed: User must exist, User can't be blank, Name can't be blank/)
+        expect(last_response.body).to match(/Validation failed: Name can't be blank/)
       end
     end
   end
