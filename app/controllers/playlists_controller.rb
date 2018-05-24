@@ -18,7 +18,7 @@ class PlaylistsController < ApplicationController
   end
 
   def update
-    @playlist.update(playlist_params)
+    @playlist.update(playlist_params.delete('user_id'))
 
     if params[:playlist][:song_ids].present?
       @playlist.songs.delete
@@ -40,7 +40,7 @@ class PlaylistsController < ApplicationController
   end
 
   def set_playlist
-    @playlist = Playlist.find(params[:id])
+    @playlist = Playlist.by_user(@current_user.id).find(params[:id])
   end
 
 end
