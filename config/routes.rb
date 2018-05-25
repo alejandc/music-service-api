@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     member do
       put 'empty'
       put 'add_songs'
+      put 'remove_songs'
     end
   end
 

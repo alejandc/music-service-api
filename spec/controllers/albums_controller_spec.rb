@@ -11,7 +11,7 @@ RSpec.describe AlbumsController, type: :request do
   let!(:songs) { create_list(:song, 10, artist: artist, album: albums.first) }
   let!(:headers) { { 'Content-Type' => 'application/json', 'Authorization' => @auth_token } }
 
-  # Test suite for GET /artists/#{artist.id}/albums
+  # Test suite for GET /artists/:artist_id/albums
   describe 'GET /artists/:artist_id/albums' do
     before { get "/artists/#{artist.id}/albums", {}, headers }
 
@@ -22,9 +22,9 @@ RSpec.describe AlbumsController, type: :request do
     end
   end
 
-  # Test suite for GET /artists/#{artist.id}/albums/:id
-  describe 'GET /artists/:artist_id/albums/:id' do
-    before { get "/artists/#{artist.id}/albums/#{album_id}", {}, headers }
+  # Test suite for GET /albums/:id
+  describe 'GET /albums/:id' do
+    before { get "/albums/#{album_id}", {}, headers }
 
     context 'when the record exists' do
       let(:album_id) { albums.first.id }
@@ -52,7 +52,7 @@ RSpec.describe AlbumsController, type: :request do
     end
   end
 
-  # Test suite for POST /artists/#{artist.id}/albums
+  # Test suite for POST /artists/:artist_id/albums
   describe 'POST /artists/:artist_id/albums' do
     # valid payload
     let(:valid_attributes) { { name: 'Album 1' } }
@@ -84,12 +84,12 @@ RSpec.describe AlbumsController, type: :request do
     end
   end
 
-  # Test suite for PUT /artists/#{artist.id}/albums/:id
-  describe 'PUT /artists/:artist_id/albums/:id' do
+  # Test suite for PUT /albums/:id
+  describe 'PUT /albums/:id' do
     let(:valid_attributes) { { name: 'Album 2' } }
 
     context 'when the record exists' do
-      before { put "/artists/#{artist.id}/albums/#{albums.first.id}", { album: valid_attributes }, headers }
+      before { put "/albums/#{albums.first.id}", { album: valid_attributes }, headers }
 
       it 'updates the record' do
         expect(last_response.body).to be_empty
@@ -101,11 +101,11 @@ RSpec.describe AlbumsController, type: :request do
     end
   end
 
-  # Test suite for DELETE /artists/#{artist.id}/albums/:id
-  describe 'DELETE /artists/:artist_id/albums/:id' do
+  # Test suite for DELETE /albums/:id
+  describe 'DELETE /albums/:id' do
     let(:album_id) { albums.first.id }
 
-    before { delete "/artists/#{artist.id}/albums/#{album_id}", {}, headers }
+    before { delete "/albums/#{album_id}", {}, headers }
 
     it 'returns status code 204' do
       expect(last_response.status).to eq(204)
