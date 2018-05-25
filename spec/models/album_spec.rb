@@ -16,8 +16,16 @@ RSpec.describe Album, type: :model do
 
   it { should belong_to(:artist) }
 
-  describe "Validations" do
-    it "is valid with valid attributes" do
+  describe 'Album image' do
+    let(:album_image) { create(:album_with_image).image }
+
+    it 'album image saved' do
+      expect(album_image).to be_an_instance_of(ActiveStorage::Attached::One)
+    end
+  end
+
+  describe 'Validations' do
+    it 'is valid with valid attributes' do
       expect(subject).to be_valid
     end
 

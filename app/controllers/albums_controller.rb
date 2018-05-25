@@ -32,7 +32,7 @@ class AlbumsController < ApplicationController
   private
 
   def album_params
-    params.require(:album).permit(:name, :artist_id) if params[:album].present?
+    params.require(:album).permit(:name, :artist_id, :image) if params[:album].present?
   end
 
   def set_album
