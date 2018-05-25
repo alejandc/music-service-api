@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe PlaylistsController, type: :request do
+RSpec.describe V1::PlaylistsController, type: :request do
   before(:all) do
     @user = generate_user
     @auth_token = login

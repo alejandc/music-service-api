@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe AlbumsController, type: :request do
+RSpec.describe V1::AlbumsController, type: :request do
   before(:all) do
     generate_user
     @auth_token = login
