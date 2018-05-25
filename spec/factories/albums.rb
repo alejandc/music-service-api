@@ -14,4 +14,15 @@ FactoryBot.define do
     name { Faker::StarWars.character }
     artist { create(:artist)  }
   end
+
+  factory :album_with_image, class: Album do
+    name { Faker::StarWars.character }
+    artist { create(:artist)  }
+
+    after(:create) do |culture|
+      culture.image.attach(io: File.open(Rails.root.join('spec', 'factories', 'images', 'test_image.jpeg')),
+                           filename: 'test_image.jpeg', 
+                           content_type: 'image/jpeg')
+    end
+  end
 end

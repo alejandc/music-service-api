@@ -55,7 +55,8 @@ RSpec.describe AlbumsController, type: :request do
   # Test suite for POST /artists/:artist_id/albums
   describe 'POST /artists/:artist_id/albums' do
     # valid payload
-    let(:valid_attributes) { { name: 'Album 1' } }
+    let(:valid_attributes) { { name: 'Album 1',
+                               image: fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'test_image.jpeg'), 'image/jpeg') } }
 
     context 'when the request is valid' do
       before { post "/artists/#{artist.id}/albums", { album: valid_attributes }, headers }
