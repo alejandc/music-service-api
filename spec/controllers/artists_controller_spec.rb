@@ -14,9 +14,12 @@ RSpec.describe ArtistsController, type: :request do
   describe 'GET /artists' do
     before { get '/artists', {}, headers }
 
-    it 'returns status code 200' do
+    it 'returns the albums' do
       expect(JSON.parse(last_response.body)).not_to be_empty
       expect(JSON.parse(last_response.body).size).to eq(10)
+    end
+
+    it 'returns status code 200' do
       expect(last_response.status).to eq(200)
     end
   end
@@ -59,7 +62,7 @@ RSpec.describe ArtistsController, type: :request do
     context 'when the request is valid' do
       before { post '/artists', { artist: valid_attributes }, headers }
 
-      it 'creates a todo' do
+      it 'creates an artist' do
         expect(JSON.parse(last_response.body)['name']).to eq('Joe')
       end
 

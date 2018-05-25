@@ -2,9 +2,15 @@ Rails.application.routes.draw do
 
   post 'authenticate', to: 'authentication#authenticate'
 
+  get 'songs/all', to: 'songs#all_songs'
+
   resources :artists, shallow: true do
     resources :albums do
-      resources :songs
+      resources :songs do
+        member do
+          put 'set_featured'
+        end
+      end
     end
   end
 

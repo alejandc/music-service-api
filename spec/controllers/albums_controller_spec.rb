@@ -15,9 +15,12 @@ RSpec.describe AlbumsController, type: :request do
   describe 'GET /artists/:artist_id/albums' do
     before { get "/artists/#{artist.id}/albums", {}, headers }
 
-    it 'returns status code 200' do
+    it 'returns the albums' do
       expect(JSON.parse(last_response.body)).not_to be_empty
       expect(JSON.parse(last_response.body).size).to eq(10)
+    end
+
+    it 'returns status code 200' do
       expect(last_response.status).to eq(200)
     end
   end
@@ -61,8 +64,9 @@ RSpec.describe AlbumsController, type: :request do
     context 'when the request is valid' do
       before { post "/artists/#{artist.id}/albums", { album: valid_attributes }, headers }
 
-      it 'creates a todo' do
+      it 'creates an album' do
         expect(JSON.parse(last_response.body)['name']).to eq('Album 1')
+        expect(JSON.parse(last_response.body)['image']).to eq('test_image.jpeg')
       end
 
       it 'returns status code 201' do
