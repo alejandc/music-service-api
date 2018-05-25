@@ -64,7 +64,7 @@ RSpec.describe PlaylistsController, type: :request do
     context 'when the request is valid' do
       before { post '/playlists', { playlist: valid_attributes }, headers }
 
-      it 'creates a todo' do
+      it 'creates a playlist' do
         expect(JSON.parse(last_response.body)['name']).to eq('Playlist 1')
         expect(JSON.parse(last_response.body)['songs'].count).to eq(songs.count)
       end

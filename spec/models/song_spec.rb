@@ -32,6 +32,14 @@ RSpec.describe Song, type: :model do
     end
   end
 
+  describe 'Featured songs' do
+    let!(:featured_songs) { create_list(:featured_song, 5) }
+
+    it 'featured songs saved' do
+      expect(Song.featured(true).count).to eq(featured_songs.count)
+    end
+  end
+
   describe "Validations" do
     it "is valid with valid attributes" do
       expect(subject).to be_valid

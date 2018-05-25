@@ -21,5 +21,10 @@ class Album < ApplicationRecord
 
   scope :by_artist, -> (artist_id) { where(artist_id: artist_id) }
 
+  def as_json(options = {})
+    super(options).merge({
+      image: self.image.attachment.try(:filename).try(:to_s)
+    })
+  end
 
 end

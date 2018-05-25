@@ -31,5 +31,27 @@ class Song < ApplicationRecord
 
   scope :by_artist, -> (artist_id) { where(artist_id: artist_id) }
   scope :by_album, -> (album_id) { where(album_id: album_id) }
+  scope :featured, -> (featured) { where(featured: featured) }
+
+  def as_json(options = {})
+    super(options).merge({
+      image: self.image.attachment.try(:filename).try(:to_s)
+    })
+  end
+
+
+  def self.search(filters)
+    songs = self
+
+    if filters && filters['featured'].present?
+      songs = songs.featured(filters[:featured])
+    end
+
+    if filters && filters['artist_id'].present?
+      songs = songs.by_artist(filters[:artist_id])
+    end
+
+    songs.order('created_at DESC')
+  end
 
 end
