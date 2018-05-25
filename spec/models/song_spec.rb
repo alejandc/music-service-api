@@ -2,14 +2,16 @@
 #
 # Table name: songs
 #
-#  id         :bigint(8)        not null, primary key
-#  name       :string
-#  duration   :decimal(6, 2)
-#  genre_cd   :integer
-#  artist_id  :bigint(8)
-#  album_id   :bigint(8)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id            :bigint(8)        not null, primary key
+#  name          :string
+#  duration      :decimal(6, 2)
+#  genre_cd      :integer
+#  artist_id     :bigint(8)
+#  album_id      :bigint(8)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  featured      :boolean          default(FALSE)
+#  featured_text :text
 #
 
 require 'rails_helper'
@@ -21,6 +23,14 @@ RSpec.describe Song, type: :model do
   it { should belong_to(:artist) }
   it { should belong_to(:album) }
   it { should have_and_belong_to_many(:playlists) }
+
+  describe 'Album image' do
+    let(:song_image) { create(:featured_song).image }
+
+    it 'album image saved' do
+      expect(song_image).to be_an_instance_of(ActiveStorage::Attached::One)
+    end
+  end
 
   describe "Validations" do
     it "is valid with valid attributes" do
