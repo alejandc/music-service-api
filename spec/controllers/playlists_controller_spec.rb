@@ -16,9 +16,12 @@ RSpec.describe PlaylistsController, type: :request do
   describe 'GET /playlists' do
     before { get '/playlists', {}, headers }
 
-    it 'returns status code 200' do
+    it 'returns the playlists' do
       expect(JSON.parse(last_response.body)).not_to be_empty
       expect(JSON.parse(last_response.body).size).to eq(10)
+    end
+
+    it 'returns status code 200' do
       expect(last_response.status).to eq(200)
     end
   end
@@ -30,7 +33,7 @@ RSpec.describe PlaylistsController, type: :request do
     context 'when the record exists' do
       let(:playlist_id) { playlists.first.id }
 
-      it 'returns the playlists' do
+      it 'returns the playlist' do
         expect(JSON.parse(last_response.body)).not_to be_empty
         expect(JSON.parse(last_response.body)['id']).to eq(playlists.first.id)
       end
@@ -100,6 +103,67 @@ RSpec.describe PlaylistsController, type: :request do
       it 'returns status code 204' do
         expect(last_response.status).to eq(204)
       end
+    end
+  end
+
+  # Test suite for PUT /playlists/:id/empty
+  describe 'PUT /playlists/:id/empty' do
+    let(:playlist_id) { playlists.first.id }
+
+    context 'when the record exists' do
+      before { put "/playlists/#{playlist_id}/empty", nil, headers }
+
+      it 'updates the record' do
+        expect(last_response.body).to be_empty
+      end
+
+      it 'playlist without songs' do
+        expect(Playlist.find(playlist_id).songs.count).to eq(0)
+      end
+
+      it 'returns status code 204' do
+        expect(last_response.status).to eq(204)
+      end
+
+    end
+  end
+
+  # Test suite for PUT /playlists/:id/add_songs
+  describe 'PUT /playlists/:id/add_songs' do
+    let(:playlist_id) { playlists.first.id }
+    let(:new_songs) { create_list(:song, 5, artist: artist, album: album) }
+
+    context 'when the record exists' do
+      before { put "/playlists/#{playlist_id}/add_songs", { song_ids: new_songs.map(&:id) }, headers }
+
+      it 'returns the playlist' do
+        expect(JSON.parse(last_response.body)).not_to be_empty
+        expect(JSON.parse(last_response.body)['songs'].size).to eq(songs.count + new_songs.count)
+      end
+
+      it 'returns status code 200' do
+        expect(last_response.status).to eq(200)
+      end
+
+    end
+  end
+
+  # Test suite for PUT /playlists/:id/remove_songs
+  describe 'PUT /playlists/:id/remove_songs' do
+    let(:playlist_id) { playlists.first.id }
+
+    context 'when the record exists' do
+      before { put "/playlists/#{playlist_id}/remove_songs", { song_ids: songs.last(5).map(&:id) }, headers }
+
+      it 'returns the playlist' do
+        expect(JSON.parse(last_response.body)).not_to be_empty
+        expect(JSON.parse(last_response.body)['songs'].size).to eq(5)
+      end
+
+      it 'returns status code 200' do
+        expect(last_response.status).to eq(200)
+      end
+
     end
   end
 
