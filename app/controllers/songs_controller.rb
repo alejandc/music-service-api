@@ -2,7 +2,7 @@ class SongsController < ApplicationController
   before_action :set_song, only: [:show, :update, :destroy]
 
   def index
-    @songs = Song.by_artist(params[:artist_id]).by_album(params[:album_id])
+    @songs = Song.by_album(params[:album_id])
     json_response(@songs)
   end
 
@@ -12,8 +12,10 @@ class SongsController < ApplicationController
 
   def create
     @song = Song.new(song_params.except(:artist_id, :album_id))
-    @song.artist = Artist.find(params[:artist_id])
-    @song.album = Album.find(params[:album_id])
+
+    @album = Album.includes(:artist).find(params[:album_id])
+    @song.album = @album
+    @song.artist = @album.artist
 
     @song.save!
 
