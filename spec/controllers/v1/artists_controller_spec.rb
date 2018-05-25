@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ArtistsController, type: :request do
+RSpec.describe V1::ArtistsController, type: :request do
   before(:all) do
     generate_user
     @auth_token = login
