@@ -11,9 +11,9 @@ RSpec.describe SongsController, type: :request do
   let!(:songs) { create_list(:song, 10, artist: artist, album: album) }
   let!(:headers) { { 'Content-Type' => 'application/json', 'Authorization' => @auth_token } }
 
-  # Test suite for GET /artists/#{artist.id}/albums
-  describe 'GET /artists/:artist_id/albums/:album_id/songs' do
-    before { get "/artists/#{artist.id}/albums/#{album.id}/songs", {}, headers }
+  # Test suite for GET /albums/:album_id/songs
+  describe 'GET /albums/:album_id/songs' do
+    before { get "/albums/#{album.id}/songs", {}, headers }
 
     it 'returns status code 200' do
       expect(JSON.parse(last_response.body)).not_to be_empty
@@ -22,9 +22,9 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for GET /artists/#{artist.id}/albums/#{album.id}/songs/:id
-  describe 'GET /artists/:artist_id/albums/:album_id/songs/:id' do
-    before { get "/artists/#{artist.id}/albums/#{album.id}/songs/#{song_id}", {}, headers }
+  # Test suite for GET songs/:id
+  describe 'GET /songs/:id' do
+    before { get "/songs/#{song_id}", {}, headers }
 
     context 'when the record exists' do
       let(:song_id) { songs.first.id }
@@ -52,14 +52,14 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for POST /artists/#{artist.id}/albums/#{album.id}/songs
-  describe 'POST /artists/:artist_id/albums/:album_id/songs' do
+  # Test suite for POST /albums/:album_id/songs
+  describe 'POST /albums/:album_id/songs' do
     # valid payload
     let(:valid_attributes) { { name: 'Song 1', duration: 189.22, genre_cd: 1,
                                artist_id: artist.id, album_id: album.id } }
 
     context 'when the request is valid' do
-      before { post "/artists/#{artist.id}/albums/#{album.id}/songs", { song: valid_attributes }, headers }
+      before { post "/albums/#{album.id}/songs", { song: valid_attributes }, headers }
 
       it 'creates a todo' do
         expect(JSON.parse(last_response.body)['name']).to eq('Song 1')
@@ -85,12 +85,12 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for PUT /artists/#{artist.id}/albums/#{album.id}/songs/:id
-  describe 'PUT /artists/:artist_id/albums/:album_id/songs/:id' do
+  # Test suite for PUT /songs/:id
+  describe 'PUT /songs/:id' do
     let(:valid_attributes) { { name: 'Song 2' } }
 
     context 'when the record exists' do
-      before { put "/artists/#{artist.id}/albums/#{album.id}/songs/#{songs.first.id}",
+      before { put "/songs/#{songs.first.id}",
                    { song: valid_attributes }, headers }
 
       it 'updates the record' do
@@ -103,9 +103,9 @@ RSpec.describe SongsController, type: :request do
     end
   end
 
-  # Test suite for DELETE /artists/#{artist.id}/albums/#{album.id}/songs/:id
-  describe 'DELETE /artists/:artist_id/albums/:id' do
-    before { delete "/artists/#{artist.id}/albums/#{album.id}/songs/#{songs.first.id}", {}, headers }
+  # Test suite for DELETE /songs/:id
+  describe 'DELETE /songs/:id' do
+    before { delete "/songs/#{songs.first.id}", {}, headers }
 
     it 'returns status code 204' do
       expect(last_response.status).to eq(204)

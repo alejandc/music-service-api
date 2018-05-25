@@ -13,6 +13,10 @@ class Album < ApplicationRecord
 
   belongs_to :artist
 
+  has_many :songs, dependent: :destroy
+
   validates :name, :artist, presence: true
+
+  scope :by_artist, -> (artist_id) { where(artist_id: artist_id) }
 
 end
