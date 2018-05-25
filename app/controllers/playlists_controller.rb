@@ -1,5 +1,6 @@
 class PlaylistsController < ApplicationController
-  before_action :set_playlist, only: [:show, :update, :destroy, :empty]
+  before_action :set_playlist, only: [:show, :update, :destroy, :empty, :add_songs,
+                                      :remove_songs]
 
   def index
     @playlists = Playlist.by_user(@current_user.id)
@@ -22,12 +23,6 @@ class PlaylistsController < ApplicationController
 
   def update
     @playlist.update(playlist_params)
-
-    if params[:playlist][:song_ids].present?
-      @playlist.songs.delete
-      @playlist.songs << Song.where(id: params[:playlist][:song_ids])
-    end
-
     head :no_content
   end
 
@@ -37,15 +32,17 @@ class PlaylistsController < ApplicationController
   end
 
   def empty
-    @playlist.songs.delete
+    @playlist.songs.delete_all
     head :no_content
   end
 
   def add_songs
-    if params[:song_ids].present?
-      @playlist.songs << Song.where(id: params[:song_ids])
-    end
+    @playlist.songs << Song.where(id: params[:song_ids]) if params[:song_ids].present?
+    json_response(@playlist)
+  end
 
+  def remove_songs
+    @playlist.songs.delete(Song.where(id: params[:song_ids])) if params[:song_ids].present?
     json_response(@playlist)
   end
 
