@@ -6,7 +6,7 @@ class SongSearcher
     if params[:name].present?
       filters << {match: {name: params[:name]}}
     end
-    binding.pry
+
     Song.__elasticsearch__.search query: base_query(filters)
   end
 
