@@ -15,6 +15,8 @@
 #
 
 class Song < ApplicationRecord
+  include SongSearchable
+
   before_destroy { playlists.delete_all }
 
   belongs_to :album
