@@ -7,6 +7,8 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'faker'
 
+User.create!(name: 'Test User', email: 'test@test.com', password: 'test123', password_confirmation: 'test123')
+
 3.times do |i|
   Artist.create!(name: Faker::Artist.name, biography: Faker::Lorem.paragraphs )
 end
@@ -17,13 +19,13 @@ Artist.all.each do |artist|
   end
 end
 
-9500.times do |i|
+9000.times do |i|
   featured = [true, false].sample
   featured_text = (featured) ? Faker::Lorem.paragraphs : nil
 
   Song.create!(artist: Artist.limit(1).order("RANDOM()").last,
                album: Album.limit(1).order("RANDOM()").last,
-               name: Faker::Lorem.words(rand(4)),
+               name: Faker::Lorem.words(4).join(' '),
                genre_cd: rand(10),
                duration: Faker::Number.decimal(2, 2),
                featured: featured,
