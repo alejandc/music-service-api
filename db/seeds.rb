@@ -5,3 +5,27 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require 'faker'
+
+3.times do |i|
+  Artist.create!(name: Faker::Artist.name, biography: Faker::Lorem.paragraphs )
+end
+
+Artist.all.each do |artist|
+  3.times do |i|
+    artist.albums.create!(name: Faker::Lorem.words(rand(4)))
+  end
+end
+
+9500.times do |i|
+  featured = [true, false].sample
+  featured_text = (featured) ? Faker::Lorem.paragraphs : nil
+
+  Song.create!(artist: Artist.limit(1).order("RANDOM()").last,
+               album: Album.limit(1).order("RANDOM()").last,
+               name: Faker::Lorem.words(rand(4)),
+               genre_cd: rand(10),
+               duration: Faker::Number.decimal(2, 2),
+               featured: featured,
+               featured_text: featured_text)
+end
