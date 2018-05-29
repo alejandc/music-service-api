@@ -7,8 +7,8 @@ module V1
       json_response(@songs)
     end
 
-    def all_songs
-      @songs = Song.search(params[:filters])
+    def search
+      @songs = SongSearcher.search(params)
       json_response(@songs)
     end
 

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   post 'authenticate', to: 'authentication#authenticate'
 
   scope module: :v1, constraints: ApiVersion.new('v1', true) do
-    get 'songs/all', to: 'songs#all_songs'
+    get 'songs/search', to: 'songs#search'
 
     resources :artists, shallow: true do
       resources :albums do

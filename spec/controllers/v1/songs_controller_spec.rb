@@ -25,51 +25,6 @@ RSpec.describe V1::SongsController, type: :request do
     end
   end
 
-  # Test suite for GET /songs/all
-  describe 'GET /songs/all' do
-    let!(:another_artist) { create(:artist) }
-    let!(:featured_songs) { create_list(:featured_song, 5, artist: another_artist) }
-
-    context 'find all songs' do
-      before { get "/songs/all", {}, headers }
-
-      it 'returns all songs' do
-        expect(JSON.parse(last_response.body)).not_to be_empty
-        expect(JSON.parse(last_response.body).size).to eq(15)
-      end
-
-      it 'returns status code 200' do
-        expect(last_response.status).to eq(200)
-      end
-    end
-
-    context 'find all featured songs' do
-      before { get "/songs/all", { filters: {featured: true} }, headers }
-
-      it 'returns all featured songs' do
-        expect(JSON.parse(last_response.body)).not_to be_empty
-        expect(JSON.parse(last_response.body).size).to eq(5)
-      end
-
-      it 'returns status code 200' do
-        expect(last_response.status).to eq(200)
-      end
-    end
-
-    context 'find songs by artist' do
-      before { get "/songs/all", { filters: {artist_id: another_artist.id} }, headers }
-
-      it 'returns all songs by artist' do
-        expect(JSON.parse(last_response.body)).not_to be_empty
-        expect(JSON.parse(last_response.body).size).to eq(5)
-      end
-
-      it 'returns status code 200' do
-        expect(last_response.status).to eq(200)
-      end
-    end
-  end
-
   # Test suite for GET songs/:id
   describe 'GET /songs/:id' do
     before { get "/songs/#{song_id}", {}, headers }

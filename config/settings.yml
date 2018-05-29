@@ -4,13 +4,8 @@ default: &default
 
 
 development:
-  <<: *default
-
   :elasticsearch:
     :host: 'http://localhost:9200'
-
-staging:
-  <<: *default
 
 production:
   <<: *default
