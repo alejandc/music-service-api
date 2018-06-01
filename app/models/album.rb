@@ -23,7 +23,8 @@ class Album < ApplicationRecord
 
   def as_json(options = {})
     super(options).merge({
-      image: self.image.attachment.try(:filename).try(:to_s)
+      image: self.image.attachment.try(:filename).try(:to_s),
+      songs: self.songs
     })
   end
 
