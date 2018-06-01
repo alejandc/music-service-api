@@ -13,26 +13,26 @@ module V1
     end
 
     api :GET, 'artists', 'Artist list'
-    error :code => 401, :desc => "Unauthorized"
+    error code: 401, desc: "Unauthorized"
     example "artists: [{name: 'Artist name', albums: [Album list], songs: [Song list]}]"
-    returns :artist, :desc => "Artist list"
+    returns :artist, desc: "Artist list"
     def index
       @artists = Artist.all
       json_response(@artists)
     end
 
     api :GET, 'artists/:id', 'Show artist details'
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 404, :desc => "Not Found"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
     example "artist: {name: 'Artist name', albums: [Album list], songs: [Song list]}"
-    returns :artist, :desc => "The artist"
+    returns :artist, desc: "The artist"
     def show
       json_response(@artist)
     end
 
     api :POST, "artists", "Create an artist"
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 422, :desc => "Unprocessable Entity"
+    error code: 401, desc: "Unauthorized"
+    error code: 422, desc: "Unprocessable Entity"
     description 'Create artist with specifed artist params'
     param_group :artist
     def create
@@ -41,9 +41,9 @@ module V1
     end
 
     api :PUT, "artists/:id", "Update an artist"
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 404, :desc => "Not Found"
-    error :code => 422, :desc => "Unprocessable Entity"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
+    error code: 422, desc: "Unprocessable Entity"
     param_group :artist
     def update
       @artist.update!(artist_params)
@@ -51,8 +51,8 @@ module V1
     end
 
     api :DELETE, "artists/:id", "Delete an artist"
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 404, :desc => "Not Found"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
     def destroy
       @artist.destroy
       head :no_content

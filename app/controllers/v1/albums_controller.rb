@@ -14,26 +14,26 @@ module V1
     end
 
     api :GET, 'artists/:artist_id/albums', 'Album list by artist'
-    error :code => 401, :desc => "Unauthorized"
+    error code: 401, desc: "Unauthorized"
     example "albums: [{name: 'Album name', artist_id: :artist_id, image: 'url image', songs: [Song list]}]"
-    returns :album, :desc => "Album list"
+    returns :album, desc: "Album list"
     def index
       @albums = Album.where(artist_id: params[:artist_id])
       json_response(@albums)
     end
 
     api :GET, 'albums/:id', 'Show album details'
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 404, :desc => "Not Found"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
     example "album: {name: 'Album name', artist_id: 1, image: 'url image', songs: [Song list]}"
-    returns :album, :desc => "The album"
+    returns :album, desc: "The album"
     def show
       json_response(@album)
     end
 
     api :POST, "artists/:artist_id/albums", "Create an album"
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 422, :desc => "Unprocessable Entity"
+    error code: 401, desc: "Unauthorized"
+    error code: 422, desc: "Unprocessable Entity"
     description 'Create album with specifed album params'
     param_group :album
     def create
@@ -46,9 +46,9 @@ module V1
     end
 
     api :PUT, "albums/:id", "Update an album"
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 404, :desc => "Not Found"
-    error :code => 422, :desc => "Unprocessable Entity"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
+    error code: 422, desc: "Unprocessable Entity"
     param_group :album
     def update
       @album.update(album_params)
@@ -56,8 +56,8 @@ module V1
     end
 
     api :DELETE, "albums/:id", "Delete an album"
-    error :code => 401, :desc => "Unauthorized"
-    error :code => 404, :desc => "Not Found"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
     def destroy
       @album.destroy
       head :no_content
