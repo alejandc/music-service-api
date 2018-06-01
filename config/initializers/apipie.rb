@@ -1,10 +1,13 @@
 Apipie.configure do |config|
   config.app_name                = "MusicServiceApi"
+  config.app_info["1.0"]         = "RESTful API for Music service"
   config.api_base_url            = "/"
   config.doc_base_url            = "/apipie"
   config.validate                = false
   config.validate_value          = false
   config.translate               = false
+  config.api_routes              = Rails.application.routes
+  config.reload_controllers      = Rails.env.development?
   # where is your API defined?
   config.api_controllers_matcher = "#{Rails.root}/app/controllers/**/*.rb"
 end
