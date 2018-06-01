@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   scope module: :v1, constraints: ApiVersion.new('v1', true) do
     get 'songs/search', to: 'songs#search'
+    get 'albums/all', to: 'albums#all_albums'
 
     resources :artists, shallow: true do
       resources :albums do

@@ -7,7 +7,9 @@ RSpec.describe V1::AlbumsController, type: :request do
   end
 
   let!(:artist) { create(:artist) }
+  let!(:another_artist) { create(:artist) }
   let!(:albums) { create_list(:album, 10, artist: artist) }
+  let!(:another_albums) { create_list(:album, 10, artist: another_artist) }
   let!(:songs) { create_list(:song, 10, artist: artist, album: albums.first) }
   let!(:headers) { { 'Content-Type' => 'application/json', 'Authorization' => @auth_token } }
 
@@ -18,6 +20,20 @@ RSpec.describe V1::AlbumsController, type: :request do
     it 'returns the albums' do
       expect(JSON.parse(last_response.body)).not_to be_empty
       expect(JSON.parse(last_response.body).size).to eq(10)
+    end
+
+    it 'returns status code 200' do
+      expect(last_response.status).to eq(200)
+    end
+  end
+
+  # Test suite for GET /albums/all
+  describe 'GET /albums/all' do
+    before { get "/albums/all", {}, headers }
+
+    it 'returns the albums' do
+      expect(JSON.parse(last_response.body)).not_to be_empty
+      expect(JSON.parse(last_response.body).size).to eq(20)
     end
 
     it 'returns status code 200' do
