@@ -16,9 +16,18 @@ module V1
     api :GET, 'artists/:artist_id/albums', 'Album list by artist'
     error code: 401, desc: "Unauthorized"
     example "albums: [{name: 'Album name', artist_id: :artist_id, image: 'url image', songs: [Song list]}]"
-    returns :album, desc: "Album list"
+    returns :album, desc: "Album list by artist"
     def index
       @albums = Album.where(artist_id: params[:artist_id])
+      json_response(@albums)
+    end
+
+    api :GET, 'albums/all', 'Album list'
+    error code: 401, desc: "Unauthorized"
+    example "albums: [{name: 'Album name', artist_id: :artist_id, image: 'url image', songs: [Song list]}]"
+    returns :album, desc: "Album list"
+    def all_albums
+      @albums = Album.all
       json_response(@albums)
     end
 
