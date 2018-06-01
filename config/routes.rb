@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  apipie
   post 'authenticate', to: 'authentication#authenticate'
 
   scope module: :v1, constraints: ApiVersion.new('v1', true) do
