@@ -22,6 +22,9 @@ gem 'aws-sdk-s3', require: false
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 
+# API docs
+gem 'apipie-rails'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 

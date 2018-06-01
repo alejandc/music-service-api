@@ -16,4 +16,10 @@ class Artist < ApplicationRecord
 
   validates :name, presence: true
 
+  def as_json(options = {})
+    super(options).merge({
+      albums: self.albums
+    })
+  end
+
 end
