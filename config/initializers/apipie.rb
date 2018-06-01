@@ -6,8 +6,7 @@ Apipie.configure do |config|
   config.validate                = false
   config.validate_value          = false
   config.translate               = false
-  config.api_routes              = Rails.application.routes
-  config.reload_controllers      = true
+  config.reload_controllers      = Rails.env.development? 
   # where is your API defined?
   config.api_controllers_matcher = "#{Rails.root}/app/controllers/**/*.rb"
 end
