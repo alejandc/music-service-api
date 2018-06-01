@@ -4,7 +4,7 @@
 #
 #  id            :bigint(8)        not null, primary key
 #  name          :string
-#  duration      :decimal(6, 2)
+#  duration      :integer
 #  genre_cd      :integer
 #  artist_id     :bigint(8)
 #  album_id      :bigint(8)
