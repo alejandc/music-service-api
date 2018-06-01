@@ -7,5 +7,9 @@ development:
   :elasticsearch:
     :host: 'http://localhost:9200'
 
+test:
+  :elasticsearch:
+    :host: 'http://localhost:9200'
+
 production:
   <<: *default
