@@ -1,0 +1,8 @@
+:verbose: false
+:strict: false
+:concurrency: <%= ENV['WORKERS_CONCURRENCY'] || 2 %>
+:queues:
+  - [default,            1]
+
+development:
+  :verbose: true

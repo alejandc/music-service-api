@@ -26,4 +26,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # Admin section
+  mount Sidekiq::Web => '/sidekiq'
+
 end
