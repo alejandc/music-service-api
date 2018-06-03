@@ -2,6 +2,7 @@ module V1
   class PlaylistsController < ApplicationController
     before_action :set_playlist, only: [:show, :update, :destroy, :empty, :add_songs,
                                         :remove_songs]
+    after_action only: [:index] { set_pagination_header(:playlists) }
 
     resource_description do
       formats [:json]
@@ -19,7 +20,7 @@ module V1
     example "playlists: [{name: 'Playlist name', songs: [Song list]}]"
     returns :playlist, desc: "Playlists by user"
     def index
-      @playlists = Playlist.by_user(@current_user.id)
+      @playlists = Playlist.includes(:songs).by_user(@current_user.id).page(params[:page])
       json_response(@playlists)
     end
 
@@ -95,7 +96,7 @@ module V1
         songs_to_remove = Song.where(id: params[:song_ids])
         @playlist.songs.delete(songs_to_remove)
       end
-      
+
       json_response(@playlist)
     end
 

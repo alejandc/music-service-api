@@ -1,6 +1,7 @@
 module V1
   class ArtistsController < ApplicationController
     before_action :set_artist, only: [:show, :update, :destroy]
+    after_action only: [:index] { set_pagination_header(:artists) }
 
     resource_description do
       formats [:json]
@@ -17,7 +18,7 @@ module V1
     example "artists: [{name: 'Artist name', albums: [Album list], songs: [Song list]}]"
     returns :artist, desc: "Artist list"
     def index
-      @artists = Artist.all
+      @artists = Artist.includes(:albums).all.page(params[:page])
       json_response(@artists)
     end
 

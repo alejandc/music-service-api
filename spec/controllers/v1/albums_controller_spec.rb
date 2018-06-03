@@ -150,7 +150,8 @@ RSpec.describe V1::AlbumsController, type: :request do
 
       it 'returns the playlist' do
         expect(JSON.parse(last_response.body)).not_to be_empty
-        expect(JSON.parse(last_response.body)['songs'].size).to eq(5)
+
+        expect(Album.includes(:songs).find(album_id).songs.count).to eq(5)
       end
 
       it 'returns status code 200' do
