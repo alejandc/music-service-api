@@ -22,6 +22,10 @@ gem 'aws-sdk-s3', require: false
 gem 'elasticsearch-model'
 gem 'elasticsearch-rails'
 
+
+# Pagination
+gem 'kaminari'
+
 # API docs
 gem 'apipie-rails'
 

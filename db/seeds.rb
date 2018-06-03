@@ -15,13 +15,13 @@ end
 
 Artist.all.each do |artist|
   3.times do |i|
-    artist.albums.create!(name: Faker::Lorem.words(rand(4)))
+    artist.albums.create!(name: Faker::Lorem.words(rand(4)).join(' '))
   end
 end
 
-9000.times do |i|
+4000.times do |i|
   featured = [true, false].sample
-  featured_text = (featured) ? Faker::Lorem.paragraphs : nil
+  featured_text = (featured) ? Faker::Lorem.paragraphs.join(' ') : nil
 
   Song.create!(artist: Artist.limit(1).order("RANDOM()").last,
                album: Album.limit(1).order("RANDOM()").last,

@@ -1,6 +1,7 @@
 module V1
   class AlbumsController < ApplicationController
     before_action :set_album, only: [:show, :update, :destroy, :add_songs, :remove_songs]
+    after_action only: [:all_albums] { set_pagination_header(:albums) }
 
     resource_description do
       formats [:json]
@@ -18,7 +19,7 @@ module V1
     example "albums: [{name: 'Album name', artist_id: :artist_id, image: 'url image', songs: [Song list]}]"
     returns :album, desc: "Album list by artist"
     def index
-      @albums = Album.where(artist_id: params[:artist_id])
+      @albums = Album.includes(:songs).where(artist_id: params[:artist_id])
       json_response(@albums)
     end
 
@@ -27,7 +28,7 @@ module V1
     example "albums: [{name: 'Album name', artist_id: :artist_id, image: 'url image', songs: [Song list]}]"
     returns :album, desc: "Album list"
     def all_albums
-      @albums = Album.all
+      @albums = Album.includes(:songs).page(params[:page])
       json_response(@albums)
     end
 
