@@ -77,9 +77,13 @@ module V1
     error code: 401, desc: "Unauthorized"
     error code: 404, desc: "Not Found"
     param :song_ids, Array, desc: "List of song ids to add to playlist"
+    description "This functionality is processed in background mode, the user will" \
+                " be notified when the process finish. The returned value represent" \
+                " the process reference to check the process status."
+    example "{'process_reference': '123'}"
     def add_songs
-      @playlist.songs << Song.where(id: params[:song_ids]) if params[:song_ids].present?
-      json_response(@playlist)
+      job_id = start_songs_bulk_import(params[:song_ids], 'playlist', @playlist.id)
+      json_response({process_reference: job_id})
     end
 
     api :PUT, "playlists/:id/remove_songs", "Remove songs from the playlist"
@@ -87,7 +91,11 @@ module V1
     error code: 404, desc: "Not Found"
     param :song_ids, Array, desc: "List of song ids to remove from playlist"
     def remove_songs
-      @playlist.songs.delete(Song.where(id: params[:song_ids])) if params[:song_ids].present?
+      if params[:song_ids].present?
+        songs_to_remove = Song.where(id: params[:song_ids])
+        @playlist.songs.delete(songs_to_remove)
+      end
+      
       json_response(@playlist)
     end
 

@@ -1,6 +1,6 @@
 module V1
   class AlbumsController < ApplicationController
-    before_action :set_album, only: [:show, :update, :destroy]
+    before_action :set_album, only: [:show, :update, :destroy, :add_songs, :remove_songs]
 
     resource_description do
       formats [:json]
@@ -70,6 +70,32 @@ module V1
     def destroy
       @album.destroy
       head :no_content
+    end
+
+    api :PUT, "albums/:id/add_songs", "Add songs to the album"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
+    param :song_ids, Array, desc: "List of song ids to add to album"
+    description "This functionality is processed in background mode, the user will" \
+                " be notified when the process finish. The returned value represent" \
+                " the process reference to check the process status."
+    example "{'process_reference': '123'}"
+    def add_songs
+      job_id = start_songs_bulk_import(params[:song_ids], 'album', @album.id)
+      json_response({process_reference: job_id})
+    end
+
+    api :PUT, "albums/:id/remove_songs", "Remove songs from the album"
+    error code: 401, desc: "Unauthorized"
+    error code: 404, desc: "Not Found"
+    param :song_ids, Array, desc: "List of song ids to remove from album"
+    def remove_songs
+      if params[:song_ids].present?
+        songs_to_remove = Song.where(id: params[:song_ids])
+        @album.songs.delete(songs_to_remove)
+      end
+
+      json_response(@album)
     end
 
     private
