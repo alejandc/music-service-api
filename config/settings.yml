@@ -2,6 +2,10 @@ default: &default
   :elasticsearch:
     :host: '<%= ENV['SEARCHBOX_URL']%>'
 
+  :sidekiq_web:
+    :user: '<%= ENV['SIDEKIQ_USER']%>'
+    :passwd: '<%= ENV['SIDEKIQ_PASSWORD']%>'
+
 
 development:
   :elasticsearch:

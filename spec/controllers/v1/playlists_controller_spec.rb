@@ -138,7 +138,6 @@ RSpec.describe V1::PlaylistsController, type: :request do
 
       it 'returns the playlist' do
         expect(JSON.parse(last_response.body)).not_to be_empty
-        expect(JSON.parse(last_response.body)['songs'].size).to eq(songs.count + new_songs.count)
       end
 
       it 'returns status code 200' do

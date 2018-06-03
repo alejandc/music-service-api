@@ -9,6 +9,11 @@ Rails.application.routes.draw do
 
     resources :artists, shallow: true do
       resources :albums do
+        member do
+          put 'add_songs'
+          put 'remove_songs'
+        end
+
         resources :songs do
           member do
             put 'set_featured'
@@ -25,5 +30,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Admin section
+  mount Sidekiq::Web => '/sidekiq'
 
 end

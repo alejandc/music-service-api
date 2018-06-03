@@ -122,6 +122,44 @@ RSpec.describe V1::AlbumsController, type: :request do
     end
   end
 
+  # Test suite for PUT /albums/:id/add_songs
+  describe 'PUT /albums/:id/add_songs' do
+    let(:album_id) { albums.first.id }
+    let(:new_songs) { create_list(:song, 5, artist: artist, album: albums.first) }
+
+    context 'when the record exists' do
+      before { put "/albums/#{album_id}/add_songs", { song_ids: new_songs.map(&:id) }, headers }
+
+      it 'returns the playlist' do
+        expect(JSON.parse(last_response.body)).not_to be_empty
+      end
+
+      it 'returns status code 200' do
+        expect(last_response.status).to eq(200)
+      end
+
+    end
+  end
+
+  # Test suite for PUT /albums/:id/remove_songs
+  describe 'PUT /albums/:id/remove_songs' do
+    let(:album_id) { albums.first.id }
+
+    context 'when the record exists' do
+      before { put "/albums/#{album_id}/remove_songs", { song_ids: songs.last(5).map(&:id) }, headers }
+
+      it 'returns the playlist' do
+        expect(JSON.parse(last_response.body)).not_to be_empty
+        expect(JSON.parse(last_response.body)['songs'].size).to eq(5)
+      end
+
+      it 'returns status code 200' do
+        expect(last_response.status).to eq(200)
+      end
+
+    end
+  end
+
   # Test suite for DELETE /albums/:id
   describe 'DELETE /albums/:id' do
     let(:album_id) { albums.first.id }

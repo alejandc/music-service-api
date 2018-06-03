@@ -42,7 +42,7 @@ RSpec.describe V1::ArtistsController, type: :request do
     end
 
     context 'when the record does not exist' do
-      let(:artist_id) { 100 }
+      let(:artist_id) { 1000 }
 
       it 'returns status code 404' do
         expect(last_response.status).to eq(404)

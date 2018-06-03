@@ -12,4 +12,8 @@ class ApplicationController < ActionController::API
     render json: { error: 'Not Authorized' }, status: 401 unless @current_user
   end
 
+  def start_songs_bulk_import(song_ids, import_origin, import_id)
+    BulkImportSongsWorker.perform_async(song_ids, import_origin, import_id)
+  end
+
 end
